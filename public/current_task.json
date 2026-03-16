@@ -1,0 +1,66 @@
+{
+    "task_id": "2026-03-16T10:30:00+08:00#001",
+    "task_name": "在项目中增加 Python 脚本修改 public json",
+    "task_des": "新增脚本用于修改 public 下的 json，并在每次任务执行时同步更新状态与任务历史。",
+    "status": "working",
+    "priority": "normal",
+    "progress": 20,
+    "created_at": "2026-03-16T10:29:50+08:00",
+    "started_at": "2026-03-16T10:30:00+08:00",
+    "updated_at": "2026-03-16T10:32:10+08:00",
+    "finished_at": null,
+    "stream": [
+      {
+        "at": "2026-03-16T10:30:00+08:00",
+        "text": "开始执行任务"
+      },
+      {
+        "at": "2026-03-16T10:30:10+08:00",
+        "text": "分析现有 public json"
+      },
+      {
+        "at": "2026-03-16T10:30:10+08:00",
+        "text": "生成/更新脚本与 skill"
+      },
+      {
+        "at": "2026-03-16T10:30:10+08:00",
+        "text": "生成/更新脚本与 skill"
+      },
+      {
+        "at": "2026-03-16T10:30:10+08:00",
+        "text": "生成/更新脚本与 skill"
+      },
+      {
+        "at": "2026-03-16T10:30:10+08:00",
+        "text": "生成/更新脚本与 skill"
+      },
+      {
+        "at": "2026-03-16T10:30:10+08:00",
+        "text": "生成/更新脚本与 skill22"
+      }
+    ],
+    "owner": {
+      "agent": "openclaw",
+      "workspace": "ai-agent-office"
+    },
+    "context": {
+      "targets": ["public/state.json", "public/history_task.json", "public/current_task.json"]
+    },
+    "steps": [
+      {
+        "name": "分析现有 public json",
+        "status": "success",
+        "at": "2026-03-16T10:30:10+08:00"
+      },
+      {
+        "name": "生成/更新脚本与 skill",
+        "status": "working",
+        "at": "2026-03-16T10:31:00+08:00"
+      }
+    ],
+    "artifacts": [
+      { "type": "file", "path": "scripts/edit_public_json.py" },
+      { "type": "file", "path": ".cursor/skills/openclaw-public-state-sync/SKILL.md" }
+    ],
+    "error": null
+  }

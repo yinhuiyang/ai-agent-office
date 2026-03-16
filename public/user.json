@@ -1,0 +1,10 @@
+{
+    "agent_name": "项目经理",
+    "agent_rule": "你是一个项目经理...",
+    "agent_id": "1234567890",
+    "state": "relax",
+    "detail": "休息中",
+    "updated_at": "2026-03-16T10:32:10+08:00",
+    "is_online": true,
+    "progress": 0
+}
