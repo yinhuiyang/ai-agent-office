@@ -3,9 +3,14 @@
     <header class="app-header">
       <div class="logo-title">
         <span class="logo-dot"></span>
-        <span class="logo-text">{{ user.agent_name }}</span>
+        <span class="logo-text">{{ (user && user.agent_name) || 'OpenClaw' }}</span>
       </div>
-      <button class="status-pill" :class="{ online: user.is_online, offline: !user.is_online }">{{ user.is_online ? '在线' : '离线' }}</button>
+      <button
+        class="status-pill"
+        :class="{ online: user && user.is_online, offline: !(user && user.is_online) }"
+      >
+        {{ user && user.is_online ? '在线' : '离线' }}
+      </button>
     </header>
 
     <main class="app-main">
@@ -56,25 +61,25 @@
         <div class="agent-wrapper">
           <div class="agent-image-frame">
             <video
-              v-show="agentState === 'focus'"
+              v-show="user && user.state === 'focus'"
               autoplay
               loop
               muted
               playsinline
-              :alt="agentState === 'focus' ? '专注工作状态' : '休闲思考状态'"
+              :alt="user && user.state === 'focus' ? '专注工作状态' : '休闲思考状态'"
             >
-              <source v-show="agentState === 'focus'" src="./assets/agent-focus.mp4" type="video/mp4">
+              <source v-show="user && user.state === 'focus'" src="./assets/agent-focus.mp4" type="video/mp4">
               Your browser does not support the video tag.
             </video>
             <video
-              v-show="agentState === 'relax'"
+              v-show="user && user.state === 'relax'"
               autoplay
               loop
               muted
               playsinline
-              :alt="agentState === 'focus' ? '专注工作状态' : '休闲思考状态'"
+              :alt="user && user.state === 'focus' ? '专注工作状态' : '休闲思考状态'"
             >
-              <source v-show="agentState === 'relax'" src="./assets/agent-relax.mp4" type="video/mp4">
+              <source v-show="user && user.state === 'relax'" src="./assets/agent-relax.mp4" type="video/mp4">
               Your browser does not support the video tag.
             </video>
           </div>
@@ -128,13 +133,11 @@ import SkillBar from "./components/SkillBar.vue";
 
 import agentFocus from "./assets/agent-focus.mp4";
 import agentRelax from "./assets/agent-relax.mp4";
-
 export default {
   name: "App",
   components: { SkillBar },
   data() {
     return {
-      user: { agent_name: "OpenClaw", is_online: true },
       skills: [],
       currentTask: {
         task_name: "加载中…",
@@ -245,7 +248,7 @@ export default {
           this.fetchJson("current_task.json").catch(() => null),
           this.fetchJson("history_task.json").catch(() => null)
         ]);
-
+        console.log(user);
         if (skills) this.skills = skills;
         if (user) this.user = user;
         if (Array.isArray(historyTask)) this.historyTask = historyTask;

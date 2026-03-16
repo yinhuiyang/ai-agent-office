@@ -4,7 +4,7 @@
     "task_des": "新增脚本用于修改 public 下的 json，并在每次任务执行时同步更新状态与任务历史。",
     "status": "working",
     "priority": "normal",
-    "progress": 20,
+    "progress": 0,
     "created_at": "2026-03-16T10:29:50+08:00",
     "started_at": "2026-03-16T10:30:00+08:00",
     "updated_at": "2026-03-16T10:32:10+08:00",
