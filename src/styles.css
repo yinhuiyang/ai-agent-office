@@ -220,6 +220,7 @@ body {
 .panel-right {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .panel-center {
@@ -566,6 +567,18 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-height: 34vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.history-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.6);
+  border-radius: 999px;
 }
 
 .history-item {
@@ -639,6 +652,18 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-height: 30vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.memory-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.memory-list::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.6);
+  border-radius: 999px;
 }
 
 .memory-item {
