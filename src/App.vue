@@ -131,11 +131,11 @@
           </li>
         </ul>
 
-        <h2 class="panel-title panel-title-spacing">历史记忆</h2>
+        <h2 class="panel-title panel-title-spacing">经验记忆</h2>
         <div v-if="isLoadingMemories" class="placeholder-list">
           <div class="placeholder-card" v-for="n in 3" :key="n"></div>
         </div>
-        <div v-else-if="memories.length === 0" class="empty-state">暂无历史记忆</div>
+        <div v-else-if="memories.length === 0" class="empty-state">暂无经验记忆</div>
         <ul v-else class="memory-list">
           <li v-for="m in sortedMemories" :key="m.memory_id || m.at || m.title" class="memory-item">
             <div class="memory-time" v-if="m.at">{{ new Date(m.at).toLocaleString() }}</div>

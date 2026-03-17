@@ -567,7 +567,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-height: 34vh;
+  max-height: 40vh;
   overflow-y: auto;
   padding-right: 4px;
 }
@@ -652,7 +652,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-height: 30vh;
+  max-height: 37vh;
   overflow-y: auto;
   padding-right: 4px;
 }
