@@ -116,7 +116,7 @@
         <div v-else-if="historyTask.length === 0" class="empty-state">暂无历史工作</div>
         <ul v-else class="history-list">
           <li
-            v-for="item in historyTask"
+            v-for="item in sortedHistoryTask"
             :key="item.task_id"
             class="history-item"
             :class="{ active: activeHistoryId === item.task_id }"
@@ -137,7 +137,7 @@
         </div>
         <div v-else-if="memories.length === 0" class="empty-state">暂无历史记忆</div>
         <ul v-else class="memory-list">
-          <li v-for="m in memories" :key="m.memory_id || m.at || m.title" class="memory-item">
+          <li v-for="m in sortedMemories" :key="m.memory_id || m.at || m.title" class="memory-item">
             <div class="memory-time" v-if="m.at">{{ new Date(m.at).toLocaleString() }}</div>
             <div class="memory-title">{{ m.title || m.memory_title }}</div>
             <div class="memory-desc">{{ m.des || m.memory_des }}</div>
@@ -231,6 +231,24 @@ export default {
     },
     displaySkills() {
       return this.skillTab === "basic" ? this.basicSkills : this.coreSkills;
+    },
+    sortedHistoryTask() {
+      const list = Array.isArray(this.historyTask) ? this.historyTask : [];
+      const toTs = (x) => {
+        if (!x) return 0;
+        const t = Date.parse(x);
+        return Number.isFinite(t) ? t : 0;
+      };
+      return [...list].sort((a, b) => toTs(b?.started_at || b?.finished_at) - toTs(a?.started_at || a?.finished_at));
+    },
+    sortedMemories() {
+      const list = Array.isArray(this.memories) ? this.memories : [];
+      const toTs = (x) => {
+        if (!x) return 0;
+        const t = Date.parse(x);
+        return Number.isFinite(t) ? t : 0;
+      };
+      return [...list].sort((a, b) => toTs(b?.at) - toTs(a?.at));
     }
   },
   methods: {
@@ -286,20 +304,13 @@ export default {
       }
       if (added.length) {
         this.streamItems = [...this.streamItems, ...added].slice(-80);
-        this.scrollStreamToBottomIfNearBottom();
+        this.scrollStreamToBottom();
       }
     },
-    scrollStreamToBottomIfNearBottom() {
+    scrollStreamToBottom() {
       this.$nextTick(() => {
         const el = this.$refs.streamList;
         if (!el) return;
-
-        // 如果用户正在往上看（不在底部附近），不要强制把他拉回去
-        const thresholdPx = 48;
-        const distanceToBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
-        const isNearBottom = distanceToBottom <= thresholdPx;
-        if (!isNearBottom && el.scrollTop > 0) return;
-
         el.scrollTop = el.scrollHeight;
       });
     },
