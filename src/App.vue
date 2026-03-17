@@ -4,6 +4,7 @@
       <div class="logo-title">
         <span class="logo-dot"></span>
         <span class="logo-text">{{ (user && user.agent_name) || 'OpenClaw' }}</span>
+        <span class="logo-intro">{{ (user && user.intro) || '专注执行、持续进化的智能体' }}</span>
       </div>
       <button
         class="status-pill"
@@ -15,13 +16,25 @@
 
     <main class="app-main">
       <section class="panel panel-left">
-        <h2 class="panel-title">核心技能</h2>
-        <SkillBar
-          v-for="skill in skills"
-          :key="skill.name"
-          :label="skill.label"
-          :percent="skill.percent"
-        />
+        <h2 class="panel-title">技能</h2>
+        <div class="tabs">
+          <button class="tab" :class="{ active: skillTab === 'core' }" @click="skillTab = 'core'">核心技能</button>
+          <button class="tab" :class="{ active: skillTab === 'basic' }" @click="skillTab = 'basic'">基本技能</button>
+        </div>
+
+        <div class="skill-list">
+          <div v-if="isLoadingSkills" class="placeholder-list">
+            <div class="placeholder-line" v-for="n in 6" :key="n"></div>
+          </div>
+          <div v-else-if="displaySkills.length === 0" class="empty-state">暂无技能数据</div>
+          <SkillBar
+            v-else
+            v-for="skill in displaySkills"
+            :key="skill.name || skill.label"
+            :label="skill.label || skill.name"
+            :percent="skill.percent"
+          />
+        </div>
 
         <h2 class="panel-title panel-title-spacing">当前工作</h2>
         <div class="ongoing-card" :class="{ loading: isLoadingCurrentTask }">
@@ -33,20 +46,10 @@
             <span class="loading-skeleton loading-skeleton--wide" v-if="isLoadingCurrentTask"></span>
             <span v-else>{{ currentTask.task_des }}</span>
           </div>
-          <div class="progress-track">
-            <div
-              class="progress-fill"
-              :style="{ width: Math.max(0, Math.min(100, Number(currentTask.progress || 0))) + '%' }"
-            ></div>
-          </div>
-          <div class="ongoing-footer">
-            <span v-if="isLoadingCurrentTask">加载中…</span>
-            <span v-else>预计剩余时间：{{ currentTask.eta || '未知' }}</span>
-          </div>
 
           <div class="ongoing-stream" v-if="!isLoadingCurrentTask">
             <div class="ongoing-stream-title">工作内容</div>
-            <ul class="ongoing-stream-list" v-if="streamItems.length">
+            <ul ref="streamList" class="ongoing-stream-list" v-if="streamItems.length">
               <li v-for="item in streamItems" :key="item._key" class="ongoing-stream-item">
                 <span class="ongoing-stream-at" v-if="item.at">{{ formatTime(item.at) }}</span>
                 <span class="ongoing-stream-text">{{ item.text }}</span>
@@ -107,7 +110,11 @@
 
       <section class="panel panel-right">
         <h2 class="panel-title">历史工作</h2>
-        <ul class="history-list">
+        <div v-if="isLoadingHistoryTask" class="placeholder-list">
+          <div class="placeholder-card" v-for="n in 4" :key="n"></div>
+        </div>
+        <div v-else-if="historyTask.length === 0" class="empty-state">暂无历史工作</div>
+        <ul v-else class="history-list">
           <li
             v-for="item in historyTask"
             :key="item.task_id"
@@ -120,6 +127,22 @@
               <div class="history-time">{{ new Date(item.started_at).toLocaleString() }}</div>
               <div class="history-title">{{ item.task_name }}</div>
               <div class="history-desc">{{ item.task_des }}</div>
+            </div>
+          </li>
+        </ul>
+
+        <h2 class="panel-title panel-title-spacing">历史记忆</h2>
+        <div v-if="isLoadingMemories" class="placeholder-list">
+          <div class="placeholder-card" v-for="n in 3" :key="n"></div>
+        </div>
+        <div v-else-if="memories.length === 0" class="empty-state">暂无历史记忆</div>
+        <ul v-else class="memory-list">
+          <li v-for="m in memories" :key="m.memory_id || m.at || m.title" class="memory-item">
+            <div class="memory-time" v-if="m.at">{{ new Date(m.at).toLocaleString() }}</div>
+            <div class="memory-title">{{ m.title || m.memory_title }}</div>
+            <div class="memory-desc">{{ m.des || m.memory_des }}</div>
+            <div class="memory-tags" v-if="m.tags && m.tags.length">
+              <span class="memory-tag" v-for="t in m.tags" :key="t">{{ t }}</span>
             </div>
           </li>
         </ul>
@@ -138,9 +161,10 @@ export default {
   components: { SkillBar },
   data() {
     return {
+      user: { agent_name: "OpenClaw", intro: "", state: "relax", is_online: true },
       skills: [],
       currentTask: {
-        task_name: "加载中…",
+        task_name: "等待分配工作",
         task_des: "",
         progress: 0,
         eta: "",
@@ -151,7 +175,12 @@ export default {
       eta: "2 小时",
       agentState: "focus",
       isLoadingCurrentTask: true,
+      isLoadingSkills: true,
+      isLoadingHistoryTask: true,
+      isLoadingMemories: true,
       streamItems: [],
+      skillTab: "core",
+      memories: [],
       _pollTimer: null,
       _lastStreamKeySet: new Set(),
       history: [
@@ -183,6 +212,25 @@ export default {
   computed: {
     currentAgentImage() {
       return this.agentState === "focus" ? agentFocus : agentRelax;
+    },
+    coreSkills() {
+      const list = Array.isArray(this.skills) ? this.skills : [];
+      return list.filter(
+        (s) =>
+          s &&
+          (s.type === "core" ||
+            s.category === "core" ||
+            s.core === true ||
+            (typeof s.percent === "number" && s.percent >= 80))
+      );
+    },
+    basicSkills() {
+      const list = Array.isArray(this.skills) ? this.skills : [];
+      const coreSet = new Set(this.coreSkills.map((s) => s && (s.name || s.label)));
+      return list.filter((s) => s && !coreSet.has(s.name || s.label));
+    },
+    displaySkills() {
+      return this.skillTab === "basic" ? this.basicSkills : this.coreSkills;
     }
   },
   methods: {
@@ -238,20 +286,39 @@ export default {
       }
       if (added.length) {
         this.streamItems = [...this.streamItems, ...added].slice(-80);
+        this.scrollStreamToBottomIfNearBottom();
       }
+    },
+    scrollStreamToBottomIfNearBottom() {
+      this.$nextTick(() => {
+        const el = this.$refs.streamList;
+        if (!el) return;
+
+        // 如果用户正在往上看（不在底部附近），不要强制把他拉回去
+        const thresholdPx = 48;
+        const distanceToBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+        const isNearBottom = distanceToBottom <= thresholdPx;
+        if (!isNearBottom && el.scrollTop > 0) return;
+
+        el.scrollTop = el.scrollHeight;
+      });
     },
     async pollPublicFiles() {
       try {
-        const [skills, user, currentTask, historyTask] = await Promise.all([
+        const [skills, user, currentTask, historyTask, memories] = await Promise.all([
           this.fetchJson("skill.json").catch(() => null),
           this.fetchJson("user.json").catch(() => null),
           this.fetchJson("current_task.json").catch(() => null),
-          this.fetchJson("history_task.json").catch(() => null)
+          this.fetchJson("history_task.json").catch(() => null),
+          this.fetchJson("memory.json").catch(() => null)
         ]);
-        console.log(user);
         if (skills) this.skills = skills;
+        this.isLoadingSkills = false;
         if (user) this.user = user;
         if (Array.isArray(historyTask)) this.historyTask = historyTask;
+        this.isLoadingHistoryTask = false;
+        if (Array.isArray(memories)) this.memories = memories;
+        this.isLoadingMemories = false;
 
         if (currentTask && typeof currentTask === "object") {
           this.currentTask = { ...this.currentTask, ...currentTask };
