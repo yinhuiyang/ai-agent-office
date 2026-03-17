@@ -1,3 +1,20 @@
+html {
+  /* 基础字号，后面所有 rem 都基于此缩放 */
+  font-size: 15px;
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1440px) {
+  html {
+    font-size: 16px;
+  }
+}
+
 :root {
   --bg-main: #050816;
   --bg-panel: #081423;
@@ -46,7 +63,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: 14px;
+  font-size: 0.875rem; /* 14px */
   letter-spacing: 0.2em;
   color: var(--text-muted);
 }
@@ -65,13 +82,13 @@ body {
   border: 1px solid rgba(22, 163, 74, 0.5);
   background: radial-gradient(circle at top left, #22c55e33, #022c22 70%);
   color: #bbf7d0;
-  font-size: 12px;
+  font-size: 0.75rem; /* 12px */
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
 .logo-text {
-  font-size: 20px;
+  font-size: 1.25rem; /* 20px */
   font-weight: 600;
   color: var(--text-primary);
   letter-spacing: 0.2em;
@@ -125,7 +142,7 @@ body {
 
 .panel-title {
   margin: 0 0 12px;
-  font-size: 15px;
+  font-size: 0.9375rem; /* 15px */
   letter-spacing: 0.2em;
   font-weight: 600;
   text-transform: uppercase;
@@ -155,7 +172,7 @@ body {
 }
 
 .skill-label {
-  font-size: 12px;
+  font-size: 0.75rem; /* 12px */
   color: var(--text-muted);
 }
 
@@ -174,7 +191,7 @@ body {
 }
 
 .skill-percent {
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   text-align: right;
   color: var(--text-muted);
 }
@@ -220,13 +237,13 @@ body {
 }
 
 .ongoing-label {
-  font-size: 13px;
+  font-size: 0.8125rem; /* 13px */
   color: #bbf7d0;
   margin-bottom: 6px;
 }
 
 .ongoing-sub {
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   color: var(--text-muted);
   margin-bottom: 10px;
 }
@@ -246,7 +263,7 @@ body {
 }
 
 .ongoing-footer {
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   color: var(--text-muted);
 }
 
@@ -257,7 +274,7 @@ body {
 }
 
 .ongoing-stream-title {
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   color: rgba(187, 247, 208, 0.9);
   letter-spacing: 0.12em;
   margin-bottom: 8px;
@@ -278,7 +295,7 @@ body {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 8px;
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   color: rgba(226, 232, 240, 0.92);
 }
 
@@ -294,7 +311,7 @@ body {
 }
 
 .ongoing-stream-empty {
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   color: rgba(156, 163, 175, 0.9);
 }
 
@@ -303,7 +320,7 @@ body {
   padding: 6px 14px;
   border-radius: 999px;
   border: 1px solid rgba(56, 189, 248, 0.6);
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   color: #e0f2fe;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -337,7 +354,7 @@ body {
   top: 16px;
   padding: 7px 12px;
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   background: rgba(15, 23, 42, 0.8);
   border: 1px solid rgba(56, 189, 248, 0.7);
   color: #e0f2fe;
@@ -349,7 +366,7 @@ body {
   bottom: 16px;
   left: auto;
   right: 18px;
-  font-size: 10px;
+  font-size: 0.625rem; /* 10px */
   border-color: rgba(168, 85, 247, 0.7);
 }
 
@@ -385,12 +402,12 @@ body {
 
 .state-label {
   display: block;
-  font-size: 12px;
+  font-size: 0.75rem; /* 12px */
   margin-bottom: 4px;
 }
 
 .state-desc {
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   color: var(--text-muted);
 }
 
@@ -400,12 +417,12 @@ body {
   left: 0;
   right: 0;
   padding: 10px;
-  font-size: 20px;
+  font-size: 1.25rem; /* 20px */
   text-align: center;
 }
 
 .agent-id-label {
-  font-size: 40px;
+  font-size: 2.5rem; /* 40px */
   font-weight: 600;
   color: var(--text-primary);
   letter-spacing: 0.3em;
@@ -472,16 +489,16 @@ body {
 }
 
 .history-time {
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   color: var(--text-muted);
 }
 
 .history-title {
-  font-size: 12px;
+  font-size: 0.75rem; /* 12px */
 }
 
 .history-desc {
-  font-size: 11px;
+  font-size: 0.6875rem; /* 11px */
   color: var(--text-muted);
 }
 

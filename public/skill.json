@@ -1,6 +1,1 @@
-[
-    { "name": "data", "label": "数据分析 (Data Analysis)", "percent": 96 },
-    { "name": "fullstack", "label": "全栈开发 (Full‑stack Dev)", "percent": 92 },
-    { "name": "ai", "label": "AI 模型训练 (AI Training)", "percent": 85 },
-    { "name": "uiux", "label": "UI/UX 设计 (UI Design)", "percent": 78 }
-]
+[]
