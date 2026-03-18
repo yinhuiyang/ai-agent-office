@@ -12,6 +12,9 @@
 
 配合 `scripts/edit_public_json.py` 脚本和根目录 `SKILL.md`，可以让 OpenClaw（或其他代理）在每次执行任务时自动更新这些 JSON，让 UI 成为一个实时的智能体工作与记忆面板。
 
+## 项目预览
+<img width="1890" height="825" alt="image" src="https://github.com/user-attachments/assets/1fffbf9a-731a-40f0-902d-d22628564718" />
+
 ---
 
 ## 目录结构（核心部分）
