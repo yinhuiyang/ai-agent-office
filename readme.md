@@ -14,6 +14,8 @@
 
 ## 项目预览
 <img width="1890" height="825" alt="image" src="https://github.com/user-attachments/assets/1fffbf9a-731a-40f0-902d-d22628564718" />
+<img width="1908" height="1071" alt="image" src="https://github.com/user-attachments/assets/19cd9c12-5b2d-43b2-ac11-8c7dff5dabf6" />
+
 
 ---
 
